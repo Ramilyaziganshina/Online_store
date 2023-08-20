@@ -30,7 +30,6 @@ public class User {
     @Column(name = "login")
     private String username;
 
-
     private String password;
 
     @Column(name = "user_role")
@@ -39,7 +38,6 @@ public class User {
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    //@PrimaryKeyJoinColumn
     private Avatar avatar;
 
     public User(String firstName,

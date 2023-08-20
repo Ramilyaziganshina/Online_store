@@ -1,6 +1,5 @@
 package ru.skypro.homework.service;
 
-import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.Role;
 

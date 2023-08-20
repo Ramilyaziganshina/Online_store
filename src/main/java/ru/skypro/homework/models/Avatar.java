@@ -7,7 +7,6 @@ import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "avatars")

@@ -37,7 +37,7 @@ public class Ad {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "ad", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "ad", fetch = FetchType.EAGER)
     @ToString.Exclude
     private Image image;
 

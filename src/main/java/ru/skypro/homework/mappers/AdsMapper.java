@@ -10,8 +10,6 @@ import ru.skypro.homework.dto.FullInfoAdsDto;
 import ru.skypro.homework.models.Ad;
 import ru.skypro.homework.models.Image;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -22,10 +20,9 @@ public interface AdsMapper {
      * Этот метод принимает объект типа Ad и отображает его на объект типа AdsDto.
      * Он выполняет отдельные отображения для различных полей объекта Ad.
      */
-
     @Mapping(source = "author.id", target = "author")
     @Mapping(source = "id", target = "pk")
-    @Mapping(source = "ad", target = "image",  qualifiedByName = "mapImageToString")
+    @Mapping(source = "ad", target = "image", qualifiedByName = "mapImageToString")
     AdsDto fromModel(Ad ad);
 
     /**
@@ -45,14 +42,15 @@ public interface AdsMapper {
      * adsDtoToAds(AdsDto adDto):
      * Этот метод выполняет обратное отображение объекта типа AdsDto на объект типа Ad. Он игнорирует поле images.
      */
-
     @Mapping(target = "id", source = "pk")
     @Mapping(target = "author.id", source = "author")
     @Mapping(target = "image", ignore = true)
     Ad toModel(AdsDto adsDto);
 
     Ad createOrUpdateToAd(CreateOrUpdateAdsDto createOrUpdateAdsDto);
+
     CreateOrUpdateAdsDto AdToCreateOrUpdate(Ad ad);
+
     /**
      * adsListToResponseWrapperAdsDto(Integer sizeList, List<Ad> entityList):
      * Этот метод отображает список объектов типа Ad на объект типа AllAdsOfUserDto,
@@ -67,9 +65,9 @@ public interface AdsMapper {
     @Named("mapImageToString")
     default String getImageString(Ad ad) {
         Image image = ad.getImage();
-        if(image == null){
+        if (image == null) {
             return null;
         }
-        return "/picture/"+image.getAd().getId().toString();
+        return "/picture/" + image.getAd().getId().toString();
     }
 }

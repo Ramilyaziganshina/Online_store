@@ -1,10 +1,13 @@
 package ru.skypro.homework.mappers;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import ru.skypro.homework.dto.AllCommentOfAdsDto;
 import ru.skypro.homework.dto.CommentAdsDto;
-import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.models.*;
+import ru.skypro.homework.models.Avatar;
+import ru.skypro.homework.models.Comment;
+import ru.skypro.homework.models.User;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public interface CommentMapper {
     @Named("mapImageToString")
     default String getImageString(User user) {
         Avatar avatar = user.getAvatar();
-        if(avatar == null){
+        if (avatar == null) {
             return null;
         }
         return "/avatar/" + avatar.getId().toString();

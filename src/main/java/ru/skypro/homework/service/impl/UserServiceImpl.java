@@ -6,11 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.NewPasswordDto;
-import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.Role;
-import ru.skypro.homework.dto.UserDto;
-import ru.skypro.homework.dto.UserUpdateDto;
+import ru.skypro.homework.dto.*;
 import ru.skypro.homework.exception.BadRequestException;
 import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.mappers.UserMapper;
@@ -21,24 +17,20 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
-
 import java.util.Optional;
 
 @Service
 
 public class UserServiceImpl implements UserService {
-
-
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
-    private  final UserMapper userMapper;
+    private final UserMapper userMapper;
     private final AvatarRepository avatarRepository;
     private final PasswordEncoder encoder;
 
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, AvatarRepository avatarRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-
         this.avatarRepository = avatarRepository;
         this.encoder = encoder;
     }
@@ -53,7 +45,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(newPasswordDto.getNewPassword()));
 
         userRepository.save(user);
-
     }
 
     @Override
@@ -65,9 +56,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserUpdateDto updateUser(String login, UserUpdateDto userUpdateDto) {
-        if(userUpdateDto.getFirstName() == null || userUpdateDto.getFirstName().isBlank()
+        if (userUpdateDto.getFirstName() == null || userUpdateDto.getFirstName().isBlank()
                 || userUpdateDto.getLastName() == null || userUpdateDto.getLastName().isBlank()
-                || userUpdateDto.getPhone() == null || userUpdateDto.getPhone().isBlank()) throw new BadRequestException("Incorrect argument");
+                || userUpdateDto.getPhone() == null || userUpdateDto.getPhone().isBlank())
+            throw new BadRequestException("Incorrect argument");
         Optional<User> optionalUser = userRepository.findUserByUsername(login);
         if (optionalUser.isEmpty()) {
             throw new IllegalArgumentException("Пользователь не найден");
@@ -78,19 +70,6 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.UserToUserUpdateDto(thisUser);
     }
-
-//    public List<UserDetails> getUserDetails() {
-//        List<UserDetails> result = new ArrayList<>();
-//        userRepository.findAll()
-//                .forEach(u -> result.add(org.springframework.security.core.userdetails.User.builder()
-//                                .username(u.getUsername())
-//                                .password(u.getPassword())
-//                                .roles(Role.USER.name())
-//                                .build()
-//                        )
-//                );
-//        return result;
-//    }
 
     public void registerUser(Register register, String encodedPassword, Role role) {
         User user = new User();
@@ -124,15 +103,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Avatar findAvatar(String name) {
         Optional<User> user = userRepository.findUserByUsername(name);
-        if(user.isEmpty()){
+        if (user.isEmpty()) {
             throw new NotFoundException("User not found");
         }
         Optional<Avatar> avatar = avatarRepository.findByUserId(user.get().getId());
-        if(avatar.isEmpty()){
+        if (avatar.isEmpty()) {
             throw new NotFoundException("Avatar not found");
         }
         return avatar.get();
-
     }
 
     public Avatar updateAvatar(User user, MultipartFile file) {
@@ -153,7 +131,6 @@ public class UserServiceImpl implements UserService {
         userAvatar.setUser(user);
 
         user.setAvatar(avatarRepository.save(userAvatar));
-
 
         return userRepository.save(user).getAvatar();
     }

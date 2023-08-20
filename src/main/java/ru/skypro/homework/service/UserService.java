@@ -1,17 +1,10 @@
 package ru.skypro.homework.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.NewPasswordDto;
-import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.Role;
-import ru.skypro.homework.dto.UserDto;
-import ru.skypro.homework.dto.UserUpdateDto;
+import ru.skypro.homework.dto.*;
 import ru.skypro.homework.models.Avatar;
 import ru.skypro.homework.models.User;
 
-
-import java.util.List;
 import java.util.Optional;
 
 public interface UserService {

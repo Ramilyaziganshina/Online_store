@@ -2,9 +2,6 @@ package ru.skypro.homework.dto;
 
 import lombok.Data;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.math.BigDecimal;
-
 @Data
 public class FullInfoAdsDto {
     private Integer pk;

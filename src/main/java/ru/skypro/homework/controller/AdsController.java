@@ -1,6 +1,5 @@
 package ru.skypro.homework.controller;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +24,6 @@ import ru.skypro.homework.service.AdsService;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Collection;
-
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController

@@ -61,6 +61,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @Operation(
             summary = "Установка нового пароля", tags = "Пользователь",
             responses = {
@@ -74,10 +75,9 @@ public class UserController {
 
             }
     )
-
     @PostMapping("/set_password")
     public ResponseEntity<String> setPassword(@RequestBody @Valid NewPasswordDto newPasswordDto) {
-        String login =SecurityContextHolder.getContext().getAuthentication().getName();
+        String login = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.setPassword(login, newPasswordDto);
         return ResponseEntity.ok("Пароль успешно изменен!");
     }
@@ -94,7 +94,6 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
             }
     )
-
     @GetMapping("/me")
     public ResponseEntity<UserDto> getMeUser() {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -115,7 +114,6 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
             }
     )
-
     @PatchMapping("/me")
     public ResponseEntity<UserUpdateDto> updateUser(@RequestBody UserUpdateDto userUpdateDto) {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -135,7 +133,7 @@ public class UserController {
     @PatchMapping("/me/image")
     public ResponseEntity<?> updateUserImage(@RequestParam("image") MultipartFile image) {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        userService.updateUserAvatar(login,image);
+        userService.updateUserAvatar(login, image);
 
         return ResponseEntity.ok().build();
     }

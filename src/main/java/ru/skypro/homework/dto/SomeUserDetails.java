@@ -48,5 +48,4 @@ public class SomeUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

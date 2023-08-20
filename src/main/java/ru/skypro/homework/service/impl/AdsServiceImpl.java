@@ -20,13 +20,11 @@ import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdsService;
 
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class AdsServiceImpl implements AdsService {
@@ -49,7 +47,6 @@ public class AdsServiceImpl implements AdsService {
         this.commentMapper = commentMapper;
         this.commentRepository = commentRepository;
         this.imageRepository = imageRepository;
-
     }
 
     public AllAdsOfUserDto getAllAds() {
@@ -91,7 +88,7 @@ public class AdsServiceImpl implements AdsService {
 
         logger.info("getAdsById {}", fullInfoAdsDto);
         Optional<Image> image = imageRepository.getImageByAd_Id(fullInfoAdsDto.getPk());
-        if(image.isEmpty()){
+        if (image.isEmpty()) {
             throw new NotFoundException("Not found image");
         }
         logger.info("getAdsById by Service is active {}", fullInfoAdsDto);
@@ -142,7 +139,6 @@ public class AdsServiceImpl implements AdsService {
         }
         Ad ad = adOptional.get();
         imageService.updateImage(ad, image);
-
     }
 
 
@@ -168,14 +164,13 @@ public class AdsServiceImpl implements AdsService {
         if (commentOptional.isEmpty()) {
             throw new NotFoundException("data not found");
         }
-
         commentRepository.delete(commentOptional.get());
-
     }
 
     @Override
     public CommentAdsDto addComment(Integer id, CreateOrUpdateComment createOrUpdateComment, String login) {
-        if(createOrUpdateComment.getText() == null || createOrUpdateComment.getText().isBlank()) throw new BadRequestException("Incorrect argument");
+        if (createOrUpdateComment.getText() == null || createOrUpdateComment.getText().isBlank())
+            throw new BadRequestException("Incorrect argument");
         Optional<User> user = userRepository.findUserByUsername(login);
         Optional<Ad> adOptional = adRepository.findById(Long.valueOf(id));
         if (user.isEmpty() || adOptional.isEmpty()) {
@@ -195,13 +190,15 @@ public class AdsServiceImpl implements AdsService {
     @PreAuthorize("hasRole('ADMIN') or @adsServiceImpl.checkAccessForAdComment(principal.username, #commentID)")
     @Override
     public CommentAdsDto patchComment(Integer adPk, Integer commentID, CreateOrUpdateComment createOrUpdateComment, String login) {
-        if(createOrUpdateComment.getText() == null || createOrUpdateComment.getText().isBlank()) throw new IllegalArgumentException();
+        if (createOrUpdateComment.getText() == null || createOrUpdateComment.getText().isBlank())
+            throw new IllegalArgumentException();
 
         Comment adsComment = getAdsComment(Long.valueOf(commentID), Long.valueOf(adPk));
         adsComment.setText(createOrUpdateComment.getText());
         commentRepository.save(adsComment);
         return commentMapper.commentToCommentAdsDto(commentRepository.save(adsComment));
     }
+
     public Comment getAdsComment(Long commentId, Long adId) {
         logger.info("Getting comment with id: {} for ad with id: {}", commentId, adId);
         return commentRepository.findByIdAndAdId(commentId, adId).orElseThrow();
@@ -210,10 +207,10 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public boolean checkAccessForAd(String username, long id) {
         Optional<Ad> adOptional = adRepository.findById(id);
-        if(adOptional.isEmpty()){
+        if (adOptional.isEmpty()) {
             throw new NotFoundException("Ad Not Found");
         }
-        if(userRepository.findUserByUsername(username).get().getRole().equals(Role.ADMIN)){
+        if (userRepository.findUserByUsername(username).get().getRole().equals(Role.ADMIN)) {
             return true;
         }
         return adRepository.findById(id).get().getAuthor().getUsername().equals(username);
@@ -222,13 +219,12 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public boolean checkAccessForAdComment(String username, long id) {
         Optional<Comment> commentOptional = commentRepository.findById(id);
-        if(commentOptional.isEmpty()){
+        if (commentOptional.isEmpty()) {
             throw new NotFoundException("Comment Not Found");
         }
-        if(userRepository.findUserByUsername(username).get().getRole().equals(Role.ADMIN)){
+        if (userRepository.findUserByUsername(username).get().getRole().equals(Role.ADMIN)) {
             return true;
         }
-
         return commentRepository.findCommentById(id).get().getAuthor().getUsername().equals(username);
     }
 

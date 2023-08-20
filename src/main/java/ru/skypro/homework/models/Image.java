@@ -1,6 +1,5 @@
 package ru.skypro.homework.models;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ public class Image {
     @Column(name = "image_id")
     private Long id;
 
-    /*@MapsId*/
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ad_id")
     private Ad ad;

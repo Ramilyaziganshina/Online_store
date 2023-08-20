@@ -1,6 +1,5 @@
 package ru.skypro.homework.service.impl;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
     Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
     private final ImageRepository imageRepository;
 
@@ -26,11 +25,11 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public Image createdImage(Ad ad, MultipartFile file){
+    public Image createdImage(Ad ad, MultipartFile file) {
         byte[] image = null;
         try {
             image = file.getBytes();
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.error("Не удалось извлечь содержимое изображения");
         }
 
@@ -45,12 +44,12 @@ public class ImageServiceImpl implements ImageService{
         byte[] image = null;
         try {
             image = file.getBytes();
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.error("Не удалось извлечь содержимое изображения");
         }
 
         Optional<Image> adImage = imageRepository.getImageByAd_Id(ad.getId());
-        if(adImage.isEmpty()){
+        if (adImage.isEmpty()) {
             throw new NotFoundException("Not found image");
         }
         Image changeImage = adImage.get();
